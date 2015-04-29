@@ -14,7 +14,7 @@ class Middleware(object):
         request.is_touch_device = False
         request.is_wide_device = True
         
-        if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
+        if "HTTP_X_OPERAMINI_FEATURES" in request.META:
             #Then it's running opera mini. 'Nuff said.
             #Reference from:
             # http://dev.opera.com/articles/view/opera-mini-request-headers/
@@ -23,7 +23,7 @@ class Middleware(object):
             
             return None
         
-        if request.META.has_key("HTTP_ACCEPT"):
+        if "HTTP_ACCEPT" in request.META:
             s = request.META["HTTP_ACCEPT"].lower()
             if 'application/vnd.wap.xhtml+xml' in s:
                 # Then it's a wap browser
@@ -32,7 +32,7 @@ class Middleware(object):
                 
                 return None
         
-        if request.META.has_key("HTTP_USER_AGENT"):
+        if "HTTP_USER_AGENT" in request.META:
             # This takes the most processing. Surprisingly enough, when I
             # Experimented on my own machine, this was the most efficient
             # algorithm. Certainly more so than regexes.
