@@ -1,15 +1,39 @@
-from distutils.core import setup
+from distutils.core import Command, setup
+import os
+
+
+class TocTest(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import os
+        import subprocess
+        import sys
+        try:
+            errno = subprocess.call(['tox', '-e', os.getenv('TOX_ENV', 'py27-django18')])
+            raise SystemExit(errno)
+        except OSError:
+            print("please install tox: pip install tox")
+            raise SystemExit(2)
+
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
  
 setup(
     name='minidetector',
-    version='1.1',
+    version='1.2',
     description='Django middleware and view decorator to detect phones and small-screen devices',
-    long_description = open("readme.markdown").read(),
-    author='metamoof, Chris Drackett',
-    url = "http://code.google.com/p/minidetector/",
+    long_description = read("README.md"),
+    author='metamoof, Chris Drackett, Reza Mohammadi',
+    url = "https://github.com/remohammadi/django-minidetector",
     packages = [
         "minidetector",
-        "minidetector.tests",
     ],
     classifiers = [
         "Development Status :: 3 - Alpha",
@@ -20,5 +44,6 @@ setup(
         "Programming Language :: Python",
         "Framework :: Django",
     ],
-    package_data={'minidetector': ['*.txt', 'minidetector/*.txt']}
+    cmdclass = {'test': TocTest},
+    package_data={'minidetector': ['*.txt']}
 )

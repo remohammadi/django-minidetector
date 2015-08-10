@@ -1,2 +1,4 @@
 *.py?
 .DS_Store
+MANIFEST
+.tox

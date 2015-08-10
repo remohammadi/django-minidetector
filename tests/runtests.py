@@ -1,13 +1,14 @@
+import os.path
+import sys
 from unittest import TestSuite, TestCase, TextTestRunner, TestLoader
 
 import minidetector
-
-import os.path
 
 
 class DummyRequest(object):
     def __init__(self, useragent):
         self.META = {'HTTP_USER_AGENT': useragent}
+
 
 class TestHTTPHeaders(TestCase):
     """Everything that Isn't a User-Agent Header"""
@@ -22,7 +23,6 @@ class TestHTTPHeaders(TestCase):
         request.META['HTTP_X_OPERAMINI_FEATURES'] = 'secure'
         minidetector.Middleware.process_request(request)
         self.assert_(request.mobile, "Opera Mini not Detected")
-
 
 
 def MobileDetectionFactory(uas, expected):
@@ -74,4 +74,6 @@ def gen_suite():
 suite = gen_suite()
 
 if __name__ == "__main__":
-    TextTestRunner().run(suite)
+    results = TextTestRunner().run(suite)
+    if not results.wasSuccessful():
+        sys.exit(1)

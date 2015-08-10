@@ -1,2 +1,3 @@
-include minidetector/*.txt
-include minidetector/tests/*.txt
+include tests/*.txt
+include tests/*.py
+include README.md
